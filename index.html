@@ -38,7 +38,7 @@ textarea,input{flex:1;font:inherit;background:var(--panel);color:var(--text);bor
 
 <script>
 // Change this if Google retires the model name
-const MODEL = "gemini-3.8-flash";
+const MODEL = "gemini-flash-latest";
 const SYSTEM = "You are Jarvis, a calm, witty and helpful personal AI assistant. Keep replies short and clear. Address the user as Rekib.";
 
 const log = document.getElementById("log");
@@ -68,7 +68,7 @@ async function ask(text){
   history.push({role:"user", parts:[{text}]});
   const bubble = add("…", "bot");
   const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 30000);
+  const timer = setTimeout(() => ctl.abort(), 60000);
   try{
     const res = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL + ":generateContent",
@@ -90,7 +90,7 @@ async function ask(text){
   }catch(err){
     history.pop();
     bubble.textContent = err.name === "AbortError"
-      ? "No reply after 30 seconds. Check your internet and try again."
+      ? "No reply after 60 seconds. Check your internet and try again."
       : "Something went wrong: " + err.message;
   }finally{
     clearTimeout(timer);
